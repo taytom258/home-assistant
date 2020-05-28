@@ -1,6 +1,6 @@
-  - platform: digital_ocean
-    droplets:
-      - 'bengal'
+  - platform: ping
+    name: Bengal
+    host: 165.227.86.75
   - platform: ping
     name: Siberian
     host: 172.16.2.10
@@ -54,10 +54,4 @@
         device_class: heat
         value_template: >-
           {{ is_state_attr('climate.living_room', 'hvac_action', 'heating') }}
-    
-          
-          
-          
-          
-          
     

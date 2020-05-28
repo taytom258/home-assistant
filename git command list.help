@@ -1,16 +1,14 @@
 ssh-keygen -t rsa -b 4096 -C "email" -f /config/id_rsa
 cat /config/id_rsa.pub # Deploy Key
 
-git config core.sshCommand "/usr/bin/ssh -i /config/id_rsa -F /dev/null"
-
 git init
-git config user.email "you@example.com"
-git config user.name "Your Name"
+git config core.sshCommand "/usr/bin/ssh -i /config/id_rsa -F /dev/null"
+git config user.email "taylortomlin@gmail.com"
+git config user.name "taytom258"
 git add .
-git commit
-
-git remote add origin git@github.com:{user}/{repo}
-git push -u origin master
+git remote add origin git@github.com:taytom258/home-assistant.git
+git fetch
+git pull https://github.com/taytom258/home-assistant.git master
 
 
 #!/bin/bash

@@ -1,10 +1,3 @@
-  - platform: systemmonitor
-    resources:
-      - type: memory_use_percent
-      - type: processor_use
-      - type: load_1m
-      - type: load_5m
-      - type: load_15m
   - platform: netdata
     name: Siberian
     host: 172.16.2.10
@@ -61,80 +54,8 @@
       System Load 15 Min:
         data_group: system.load
         element: load15
-  - platform: darksky
-    api_key: !secret darksky_api
-    units: us
-    scan_interval: 00:03:00
-    forecast:
-      - 0
-    monitored_conditions:
-      - summary
-      - icon
-      - temperature
-      - precip_type
-      - precip_intensity
-      - precip_probability
-      - apparent_temperature
-      - cloud_cover
-      - dew_point
-      - wind_speed
-      - wind_gust
-      - wind_bearing
-      - humidity
-      - pressure
-      - visibility
-      - ozone
-      - minutely_summary
-      - hourly_summary
-      - daily_summary
-      - uv_index
-      - nearest_storm_distance
-      - nearest_storm_bearing
   - platform: template
     sensors:
-      charge_taylorsmacbookpro:
-        unit_of_measurement: '%'
-        device_class: battery
-        friendly_name: Taylor's MacBook Pro Battery
-        value_template: >
-          {%- if states.device_tracker.taylorsmacbookpro.attributes.battery %}
-              {{ states.device_tracker.taylorsmacbookpro.attributes.battery|round }}
-          {% else %}
-              {{ states.sensor.battery_taylorsmacbookpro.state }}
-          {%- endif %}
-        icon_template: '{%- if is_state("sensor.battery_tnttaylorsmacbookpro", "unknown") %}mdi:battery-unknown{%- elif is_state_attr("device_tracker.taylorsmacbookpro", "battery_status", "Charging") %}mdi:battery-charging{%- elif  states.device_tracker.taylorsmacbookpro.attributes.battery <= 5 %}mdi:battery-outline{%- elif states.device_tracker.taylorsmacbookpro.attributes.battery >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.device_tracker.taylorsmacbookpro.attributes.battery|float / 10)|round*10}}{%- endif %}'
-      charge_tntiphone:
-        unit_of_measurement: '%'
-        device_class: battery
-        friendly_name: TNT iPhone Battery
-        value_template: >
-          {%- if states.device_tracker.tntiphone.attributes.battery %}
-              {{ states.device_tracker.tntiphone.attributes.battery|round }}
-          {% else %}
-              {{ states.sensor.battery_tntiphone.state }}
-          {%- endif %}
-        icon_template: '{%- if is_state("sensor.battery_tntiphone", "unknown") %}mdi:battery-unknown{%- elif is_state_attr("device_tracker.tntiphone", "battery_status", "Charging") %}mdi:battery-charging{%- elif  states.device_tracker.tntiphone.attributes.battery <= 5 %}mdi:battery-outline{%- elif states.device_tracker.tntiphone.attributes.battery >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.device_tracker.tntiphone.attributes.battery|float / 10)|round*10}}{%- endif %}'
-      charge_matiphone:
-        unit_of_measurement: '%'
-        device_class: battery
-        friendly_name: MAT iPhone Battery
-        value_template: >
-          {%- if states.device_tracker.matiphone.attributes.battery %}
-              {{ states.device_tracker.matiphone.attributes.battery|round }}
-          {% else %}
-              {{ states.sensor.battery_matiphone.state }}
-          {%- endif %}
-        icon_template: '{%- if is_state("sensor.battery_tntmatiphone", "unknown") %}mdi:battery-unknown{%- elif is_state_attr("device_tracker.matiphone", "battery_status", "Charging") %}mdi:battery-charging{%- elif  states.device_tracker.matiphone.attributes.battery <= 5 %}mdi:battery-outline{%- elif states.device_tracker.matiphone.attributes.battery >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.device_tracker.matiphone.attributes.battery|float / 10)|round*10}}{%- endif %}'
-      # roomba_battery:
-        # friendly_name_template: "{{ states.vacuum.roomba.name}}"
-        # value_template: >
-          # {%- if states.vacuum.roomba.attributes["battery_level"] %}
-              # {{ states.vacuum.roomba.attributes["battery_level"]|round }}
-          # {% else %}
-              # {{ states.vacuum.roomba.state }}
-          # {%- endif %}
-        # unit_of_measurement: '%'
-        # icon_template: '{{states.vacuum.roomba.attributes.battery_icon}}'
       living_room_motion_battery:
         friendly_name_template: "{{ states.zwave.aeotec_limited_zwa005_trisensor_2.name }} Battery"
         value_template: >
