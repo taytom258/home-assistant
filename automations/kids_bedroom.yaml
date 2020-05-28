@@ -1,0 +1,61 @@
+###########################################################################################
+- alias: Kids' Bedroom Fan On
+  trigger:
+  - entity_id: sensor.kids_room_temperature
+    platform: numeric_state
+    above: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '15'
+  condition:
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch_4
+    state: 'off'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch_4
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.kids_room_temperature
+    above: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_4
+    service: switch.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Kids' Bedroom temperature is up, turning on fan
+      title: Kids' Bedroom Fan On
+    service: notify.pushover
+############################################################################################
+- alias: Kids' Bedroom Fan Off
+  trigger:
+  - entity_id: sensor.kids_room_temperature
+    platform: numeric_state
+    below: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '20'
+  condition:
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch_4
+    state: 'on'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch_4
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.kids_room_temperature
+    below: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_4
+    service: switch.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Kids' Bedroom temperature is down, turning off fan
+      title: Kids' Bedroom Fan Off
+    service: notify.pushover
+############################################################################################

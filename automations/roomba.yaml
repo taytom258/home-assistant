@@ -1,0 +1,85 @@
+############################################################################################
+# - alias: Roomba Needs Light
+  # trigger:
+  # - platform: state
+    # entity_id: vacuum.roomba
+    # from: 'off'
+    # to: 'on'
+  # condition:
+  # - condition: time
+    # after: 03:30:00
+    # before: 08:00:00
+  # action:
+  # - data:
+      # entity_id: light.downstairs_lights
+      # brightness_pct: '50'
+      # kelvin: '2000'
+    # service: light.turn_on
+  # - data:
+      # data:
+        # priority: '-2'
+      # message: Roomba is running, turning on lights
+      # title: Roomba Needs Light
+    # service: notify.pushover
+    
+- alias: Roomba Needs Light
+  trigger:
+    platform: time
+    at: "03:45:00"
+  condition: []
+  action:
+  - data:
+      entity_id: light.downstairs_lights
+      brightness_pct: '50'
+      kelvin: '2000'
+    service: light.turn_on
+  - data:
+      entity_id: switch.roomba_running
+    service: switch.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Roomba is running, turning on lights
+      title: Roomba Needs Light
+    service: notify.pushover
+############################################################################################
+# - alias: Roomba is Done
+  # trigger:
+  # - platform: state
+    # entity_id: vacuum.roomba
+    # from: 'on'
+    # to: 'off'
+  # condition:
+  # - condition: time
+    # after: 03:30:00
+    # before: 08:00:00
+  # action:
+  # - data:
+      # data:
+        # priority: '-2'
+      # message: Roomba is done, turning off lights
+      # title: Roomba is Done
+    # service: notify.pushover
+  # - data:
+      # entity_id: 'light.downstairs_lights'
+    # service: light.turn_off
+    
+- alias: Roomba is Done
+  trigger:
+    platform: time
+    at: "06:00:00"
+  condition: []
+  action:
+  - data:
+      entity_id: 'light.downstairs_lights'
+    service: light.turn_off
+  - data:
+      entity_id: switch.roomba_running
+    service: switch.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Roomba is done, turning off lights
+      title: Roomba is Done
+    service: notify.pushover
+############################################################################################

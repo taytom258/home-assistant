@@ -1,0 +1,28 @@
+ssh-keygen -t rsa -b 4096 -C "email" -f /config/id_rsa
+cat /config/id_rsa.pub # Deploy Key
+
+git config core.sshCommand "/usr/bin/ssh -i /config/id_rsa -F /dev/null"
+
+git init
+git config user.email "you@example.com"
+git config user.name "Your Name"
+git add .
+git commit
+
+git remote add origin git@github.com:{user}/{repo}
+git push -u origin master
+
+
+#!/bin/bash
+
+cd /config
+git add .
+git status
+echo -n "Enter the Description for the Change: "
+read CHANGE_MSG
+git commit -m "${CHANGE_MSG}"
+git push origin master
+
+exit
+
+tar -pzcvf "config_03Oct2019.tgz" --exclude=*.db .

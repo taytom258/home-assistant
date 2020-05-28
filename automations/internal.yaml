@@ -1,0 +1,71 @@
+############################################################################################
+- alias: Let's Encrypt Renewal
+  trigger:
+  - at: 00:00:00
+    platform: time
+  condition: []
+  action:
+  - data:
+      addon: core_letsencrypt
+    service: hassio.addon_start
+############################################################################################
+- alias: Start Homekit After ZWave
+  trigger:
+  - event_data: {}
+    event_type: zwave.network_ready
+    platform: event
+  - event_data: {}
+    event_type: zwave.network_complete
+    platform: event
+  - event_data: {}
+    event_type: zwave.network_complete_some_dead
+    platform: event
+  condition: []
+  action:
+  - service: homekit.start
+############################################################################################
+- alias: Frontend Theme Set On Start
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - data:
+      name: "day"
+    service: frontend.set_theme
+############################################################################################
+- alias: Monthly Reset Energy Meter
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: "{{ now().day == 15 }}"
+  action:
+  - data:
+      node_id: 24
+    service: zwave.reset_node_meters
+############################################################################################
+- alias: Frontend Theme Set Night
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    from: "above_horizon"
+    to: "below_horizon"
+  condition: []
+  action:
+  - data:
+      name: "night"
+    service: frontend.set_theme
+############################################################################################
+- alias: Frontend Theme Set Day
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    from: "below_horizon"
+    to: "above_horizon"
+  condition: []
+  action:
+  - data:
+      name: "day"
+    service: frontend.set_theme

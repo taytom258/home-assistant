@@ -1,0 +1,24 @@
+############################################################################################
+- alias: Stairs Light Return
+  trigger:
+  - entity_id: switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_2
+    for: 00:00:02
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_2
+    service: switch.turn_on
+  - delay: 00:00:02
+  - data:
+      entity_id: light.stairs
+    service: light.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Someone turned off a hue bulb, turning it back on
+      title: Stairs Light Return
+    service: notify.pushover
+############################################################################################

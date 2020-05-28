@@ -1,0 +1,104 @@
+############################################################################################
+- alias: Master Bedroom Fan On
+  trigger:
+  - entity_id: sensor.master_bedroom_temperature
+    platform: numeric_state
+    above: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '35'
+  condition:
+  - condition: state
+    entity_id: switch.jasco_products_14288_duplex_receptacle_switch
+    state: 'off'
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch_3
+    state: 'off'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch_2
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.master_bedroom_temperature
+    above: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_3
+    service: switch.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Master bedroom temperature is up, turning on fan
+      title: Master Bedroom Fan On
+    service: notify.pushover
+############################################################################################
+- alias: Master Bedroom Fan Off
+  trigger:
+  - entity_id: sensor.master_bedroom_temperature
+    platform: numeric_state
+    below: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '40'
+  condition:
+  - condition: state
+    entity_id: switch.jasco_products_14288_duplex_receptacle_switch
+    state: 'off'
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch_3
+    state: 'on'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch_2
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.master_bedroom_temperature
+    below: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_3
+    service: switch.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Master bedroom temperature is down, turning off fan
+      title: Master Bedroom Fan Off
+    service: notify.pushover
+############################################################################################
+- alias: Wake Up Off
+  trigger:
+  - platform: template
+    value_template: "{{ states('sensor.time') == ((states.input_datetime.wake_up.attributes.timestamp + 45 * 60) | int | timestamp_custom('%H:%M', false)) }}"
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - data:
+      entity_id: light.master_bedroom_lamp_left
+    service: light.turn_off
+############################################################################################    
+- alias: Wake Up On
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time') == ((states.input_datetime.wake_up.attributes.timestamp - 15 * 60) | int | timestamp_custom('%H:%M', False)) }}"
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - data:
+      brightness_pct: '50'
+      entity_id: light.master_bedroom_lamp_left
+      kelvin: '2000'
+      transition: '900'
+    service: light.turn_on
+############################################################################################

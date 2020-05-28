@@ -1,0 +1,61 @@
+############################################################################################
+- alias: Guest Bedroom Fan On
+  trigger:
+  - entity_id: sensor.guest_bedroom_temperature
+    platform: numeric_state
+    above: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '5'
+  condition:
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch
+    state: 'off'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch_3
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.guest_bedroom_temperature
+    above: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch
+    service: switch.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Guest Bedroom temperature is up, turning on fan
+      title: Guest Bedroom Fan On
+    service: notify.pushover
+############################################################################################
+- alias: Guest Bedroom Fan Off
+  trigger:
+  - entity_id: sensor.guest_bedroom_temperature
+    platform: numeric_state
+    below: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '10'
+  condition:
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch
+    state: 'on'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch_3
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.guest_bedroom_temperature
+    below: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch
+    service: switch.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Guest Bedroom temperature is down, turning off fan
+      title: Guest Bedroom Fan Off
+    service: notify.pushover
+###########################################################################################

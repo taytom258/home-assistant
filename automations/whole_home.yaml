@@ -1,0 +1,190 @@
+############################################################################################
+- alias: No One is Home
+  trigger:
+  - entity_id: person.taylor
+    event: leave
+    platform: zone
+    zone: zone.home
+  - entity_id: person.melissa
+    event: leave
+    platform: zone
+    zone: zone.home
+  condition:
+  - condition: state
+    entity_id: person.taylor
+    state: not_home
+  - condition: state
+    entity_id: person.melissa
+    state: not_home
+  action:
+  - data:
+      entity_id: group.all_lights
+    service: light.turn_off
+  - delay: 00:00:04
+  - data:
+      entity_id: cover.garage_door
+    service: cover.close_cover
+  - data:
+      entity_id: lock.august_asl_03_smart_lock_locked
+    service: lock.lock
+  - data:
+      data:
+        priority: '-2'
+      message: No one is home, turning off all lights and shutting garage
+      title: No One is Home
+    service: notify.pushover
+############################################################################################
+- alias: Bedtime
+  trigger:
+  - entity_id: switch.jasco_products_14288_duplex_receptacle_switch
+    for: 00:00:20
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_3
+    service: switch.turn_on
+  - data:
+      entity_id: light.upstairs_lights
+    service: light.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Master bedroom outlet on, time for bed
+      title: Bedtime
+    service: notify.pushover
+############################################################################################
+- alias: Morning
+  trigger:
+  - entity_id: switch.jasco_products_14288_duplex_receptacle_switch
+    for: 00:00:02
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      brightness_pct: '100'
+      entity_id: light.stairs
+      kelvin: '4000'
+      transition: '10'
+    service: light.turn_on
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_3
+    service: switch.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Outlet off, turning off ceiling fan and turning on stairs lights
+      title: Morning
+    service: notify.pushover
+############################################################################################
+- alias: Sunset Lights On
+  trigger:
+  - event: sunset
+    platform: sun
+  condition: []
+  action:
+  - data:
+      brightness_pct: '100'
+      entity_id: light.living_room_lamps
+      kelvin: '6500'
+      transition: '60'
+    service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.dining_room
+      kelvin: '6500'
+      transition: '60'
+    service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.kitchen
+      kelvin: '6500'
+      transition: '60'
+    service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.stairs
+      kelvin: '6500'
+      transition: '60'
+    service: light.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Sunset is here, turning on downstairs lights slowly
+      title: Sunset Lights On
+    service: notify.pushover
+############################################################################################
+- alias: Sunrise Lights On
+  trigger:
+  - event: sunrise
+    platform: sun
+  condition: []
+  action:
+  - data:
+      brightness_pct: '100'
+      entity_id: light.living_room_lamps
+      kelvin: '4000'
+    service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.dining_room
+      kelvin: '4000'
+    service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.kitchen
+      kelvin: '4000'
+    service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.stairs
+      kelvin: '4000'
+    service: light.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Sunrise is here, turning on downstairs lights
+      title: Sunset Lights On
+    service: notify.pushover
+############################################################################################
+- alias: Getting Ready for Bed
+  trigger:
+  - at: '21:00:00'
+    platform: time
+  condition: []
+  action:
+  - data:
+      brightness_pct: '80'
+      entity_id: light.living_room_lamps
+      kelvin: '2800'
+      transition: '30'
+    service: light.turn_on
+  - data:
+      brightness_pct: '50'
+      entity_id: light.upstairs_lights
+      kelvin: '2800'
+      transition: '5'
+    service: light.turn_on
+  - data:
+      brightness_pct: '80'
+      entity_id: light.dining_room
+      kelvin: '2800'
+      transition: '30'
+    service: light.turn_on
+  - data:
+      brightness_pct: '80'
+      entity_id: light.kitchen
+      kelvin: '2800'
+      transition: '30'
+    service: light.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Time to get ready for bed, turning on lights and turning down lights
+      title: Getting Ready for Bed
+    service: notify.pushover
+############################################################################################

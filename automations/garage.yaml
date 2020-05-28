@@ -1,0 +1,103 @@
+############################################################################################
+- alias: IOS Action (Close Garage)
+  trigger:
+  - event_data:
+      action_name: CLOSE_GARAGE
+    event_type: ios.notification_action_fired
+    platform: event
+  condition: []
+  action:
+  - service: cover.close_cover
+    data:
+      entity_id: cover.garage_door
+  - data:
+      data:
+        priority: '-2'
+      message: IOS sent action to close garage, closing now
+      title: IOS Action (Close Garage)
+    service: notify.pushover
+############################################################################################
+- alias: Garage Door Open Timer
+  trigger:
+  - entity_id: cover.garage_door
+    for: 00:10:00
+    from: closed
+    platform: state
+    to: open
+  condition: []
+  action:
+  - data:
+      data:
+        push:
+          category: garage
+      message: Garage door has been open for 10 mins
+      title: Garage Door Open Timer
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Garage door has been open for 10 mins, notifying IOS
+      title: Garage Door Open Timer
+    service: notify.pushover
+############################################################################################
+- alias: Garage Door Open Timer (Auto Close)
+  trigger:
+  - entity_id: cover.garage_door
+    for: 00:30:00
+    from: closed
+    platform: state
+    to: open
+  condition: []
+  action:
+  - data:
+      message: Garage door has been open for 30 mins, attempting auto close
+      title: Garage Door Open Timer
+    service: notify.ios_tnt
+  - data:
+      entity_id: cover.garage_door
+    service: cover.close_cover
+  - data:
+      data:
+        priority: '-2'
+      message: Garage door has been open for 30 mins, notifying IOS and attempting auto close
+      title: Garage Door Open Timer
+    service: notify.pushover
+############################################################################################
+- alias: Garage Door Open Alert
+  trigger:
+  - entity_id: cover.garage_door
+    from: closed
+    platform: state
+    to: open
+  condition: []
+  action:
+  - data:
+      message: Garage door has been opened
+      title: Garage Door Open Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Garage door has been opened, notifying IOS
+      title: Garage Door Open Alert
+    service: notify.pushover
+############################################################################################
+- alias: Garage Door Close Alert
+  trigger:
+  - entity_id: cover.garage_door
+    from: open
+    platform: state
+    to: closed
+  condition: []
+  action:
+  - data:
+      message: Garage door has been closed
+      title: Garage Door Close Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Garage door has been closed, notifying IOS
+      title: Garage Door Close Alert
+    service: notify.pushover
+############################################################################################

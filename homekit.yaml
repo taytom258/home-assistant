@@ -1,0 +1,55 @@
+  auto_start: false
+  filter:
+    include_entities:
+      - light.downstairs_lights
+      - light.upstairs_lights
+      - switch.aeon_labs_zw139_nano_switch_switch
+      - switch.aeon_labs_zw139_nano_switch_switch_2
+      - switch.aeon_labs_zw139_nano_switch_switch_3
+      - switch.aeon_labs_zw139_nano_switch_switch_4
+      - binary_sensor.living_room_motion
+      - binary_sensor.dining_room_motion
+      - binary_sensor.front_door
+      - binary_sensor.dining_room_door
+      - switch.jasco_products_14288_duplex_receptacle_switch
+      - cover.garage_door
+      - switch.desktop_power_lock
+      - switch.desktop_power_restart
+      - switch.desktop_power_hard_restart
+  entity_config:
+    light.downstairs_lights:
+      name: "Downstairs Lights"
+    light.upstairs_lights:
+      name: "Upstairs Lights"
+    switch.aeon_labs_zw139_nano_switch_switch:
+      name: "Living Room Ceiling Fan"
+    switch.aeon_labs_zw139_nano_switch_switch_2:
+      name: "Master Bedroom Ceiling Fan"
+    switch.aeon_labs_zw139_nano_switch_switch_3:
+      name: "Guest Bedroom Ceiling Fan"
+    switch.aeon_labs_zw139_nano_switch_switch_4:
+      name: "Kids’ Bedroom Ceiling Fan"
+    binary_sensor.living_room_motion:
+      name: "Living Room Motion"
+      linked_battery_sensor: "sensor.living_room_motion_battery"
+    binary_sensor.dining_room_motion:
+      name: "Dining Room Motion"
+      linked_battery_sensor: "sensor.dining_room_motion_battery"
+    binary_sensor.front_door:
+      name: "Living Room Front Door"
+      linked_battery_sensor: "sensor.front_door_battery"
+    binary_sensor.dining_room_door:
+      name: "Dining Room Patio Door"
+      linked_battery_sensor: "sensor.dining_room_door_battery"
+    switch.jasco_products_14288_duplex_receptacle_switch:
+      name: "Master Bedroom Outlet"
+      type: "outlet"
+    cover.garage_door:
+      name: "Garage Door"
+    switch.desktop_power_lock:
+      name: "Dining Room Desktop Power Lock"
+    switch.desktop_power_restart:
+      name: "Dining Room Desktop Power Restart"
+    switch.desktop_power_hard_restart:
+      name: "Dining Room Desktop Hard Restart"
+    

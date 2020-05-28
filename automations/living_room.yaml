@@ -1,0 +1,251 @@
+###########################################################################################
+- alias: Living Room Overhead Light Return
+  trigger:
+  - entity_id: switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_3
+    for: 00:00:02
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_3
+    service: switch.turn_on
+  - delay: 00:00:02
+  - data:
+      entity_id: light.living_room_overhead_lights
+    service: light.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Someone turned off a hue bulb, turning it back on
+      title: Living Room Overhead Light Return
+    service: notify.pushover
+############################################################################################
+- alias: Living Room Fan On
+  trigger:
+  - entity_id: sensor.living_room_temperature
+    platform: numeric_state
+    above: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '25'
+  condition:
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch_2
+    state: 'off'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.living_room_temperature
+    above: '75'
+  action:
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_2
+    service: switch.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Living Room temperature is up, turning on fan
+      title: Living Room Fan On
+    service: notify.pushover
+############################################################################################
+- alias: Living Room Fan Off
+  trigger:
+  - entity_id: sensor.living_room_temperature
+    platform: numeric_state
+    below: '75'
+    for: 00:05:00
+  - platform: time_pattern
+    minutes: '/5'
+    seconds: '30'
+  condition:
+  - condition: state
+    entity_id: switch.aeon_labs_zw139_nano_switch_switch_2
+    state: 'on'
+  - condition: state
+    entity_id: zwave.aeon_labs_zw139_nano_switch
+    state: ready
+  - condition: numeric_state
+    entity_id: sensor.living_room_temperature
+    below: '75'
+  action:
+  - data:
+      data:
+        priority: '-2'
+      message: Living Room temperature is down, turning off fan
+      title: Living Room Fan Off
+    service: notify.pushover
+  - data:
+      entity_id: switch.aeon_labs_zw139_nano_switch_switch_2
+    service: switch.turn_off
+############################################################################################
+- alias: Living Room Motion Off
+  trigger:
+  - entity_id: binary_sensor.living_room_motion
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: 
+    condition: state
+    entity_id: switch.roomba_running
+    state: 'off'
+  action:
+  - data:
+      entity_id: light.living_room_lamps
+    service: light.turn_off
+  - data:
+      entity_id: light.living_room_overhead
+    service: light.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: No motion in living room, turning off lights
+      title: Living Room Motion Off
+    service: notify.pushover
+############################################################################################
+- alias: Living Room Motion On
+  trigger:
+  - entity_id: binary_sensor.living_room_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: 
+    condition: state
+    entity_id: switch.roomba_running
+    state: 'off'
+  action:
+  - data:
+      entity_id: light.living_room_lamps
+    service: light.turn_on
+  # - data:
+      # entity_id: light.living_room_overhead_lights
+    # service: light.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Motion in living room, turning on lights
+      title: Living Room Motion On
+    service: notify.pushover
+############################################################################################
+- alias: Front Door A/C Off
+  trigger:
+  - entity_id: binary_sensor.front_door
+    from: 'off'
+    for: 00:00:30
+    platform: state
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: "{{ not is_state('climate.living_room', 'off') }}"
+  action:
+  - data:
+      entity_id: climate.living_room
+    service: climate.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Front door is open, turning off A/C
+      title: Front Door A/C Off
+    service: notify.pushover
+############################################################################################
+- alias: Front Door A/C On
+  trigger:
+  - entity_id: binary_sensor.front_door
+    from: 'on'
+    for: 00:00:30
+    platform: state
+    to: 'off'
+  condition:
+  - condition: template
+    value_template: "{{ is_state('climate.living_room', 'off') }}"
+  action:
+  - data:
+      entity_id: climate.living_room
+      hvac_mode: auto
+    service: climate.set_hvac_mode
+  - data:
+      data:
+        priority: '-2'
+      message: Front door is closed, turning on A/C
+      title: Front Door A/C On
+    service: notify.pushover
+############################################################################################  
+- alias: Front Door Open Alert
+  trigger:
+  - entity_id: binary_sensor.front_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Front door has been opened
+      title: Front Door Open Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Front door has been opened, notifying IOS
+      title: Front Door Open Alert
+    service: notify.pushover
+############################################################################################
+- alias: Front Door Close Alert
+  trigger:
+  - entity_id: binary_sensor.front_door
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Front door has been closed
+      title: Front Door Close Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Front door has been closed, notifying IOS
+      title: Front Door Close Alert
+    service: notify.pushover
+############################################################################################
+- alias: Front Door Lock Alert
+  trigger:
+  - entity_id: lock.august_asl_03_smart_lock_locked
+    from: unlocked
+    platform: state
+    to: locked
+  condition: []
+  action:
+  - data:
+      message: Front door has been locked
+      title: Front Door Lock Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Front door has been locked, notifying IOS
+      title: Front Door Lock Alert
+    service: notify.pushover
+############################################################################################
+- alias: Front Door Unlock Alert
+  trigger:
+  - entity_id: lock.august_asl_03_smart_lock_locked
+    from: locked
+    platform: state
+    to: unlocked
+  condition: []
+  action:
+  - data:
+      message: Front door has been unlocked
+      title: Front Door Unlock Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Front door has been unlocked, notifying IOS
+      title: Front Door Unlock Alert
+    service: notify.pushover

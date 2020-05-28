@@ -1,0 +1,63 @@
+  - platform: digital_ocean
+    droplets:
+      - 'bengal'
+  - platform: ping
+    name: Siberian
+    host: 172.16.2.10
+  - platform: ping
+    name: Maylayan
+    host: 172.16.2.11
+  - platform: template
+    sensors:
+      living_room_motion:
+        friendly_name: "Living Room Motion"
+        device_class: motion
+        value_template: >-
+          {{ states.sensor.aeotec_limited_zwa005_trisensor_burglar_2.state|int > 0 }}
+      dining_room_motion:
+        friendly_name: "Dining Room Motion"
+        device_class: motion
+        value_template: >-
+          {{ states.sensor.aeotec_limited_zwa005_trisensor_burglar.state|int > 0 }}
+      dining_room_door:
+        friendly_name: "Dining Room Door"
+        device_class: door
+        value_template: >-
+          {{ states.sensor.aeon_labs_zw120_door_window_sensor_gen5_access_control.state|int == 22 }}
+      dining_room_door_tamper:
+        friendly_name: "Dining Room Door Tamper"
+        device_class: problem
+        value_template: >-
+          {{ states.sensor.aeon_labs_zw120_door_window_sensor_gen5_burglar.state|int == 3 }}
+      front_door:
+        friendly_name: "Front Door"
+        device_class: door
+        value_template: >-
+          {{ states.sensor.aeon_labs_zw120_door_window_sensor_gen5_access_control_2.state|int == 22 }}
+      front_door_tamper:
+        friendly_name: "Front Door Tamper"
+        device_class: problem
+        value_template: >-
+          {{ states.sensor.aeon_labs_zw120_door_window_sensor_gen5_burglar_2.state|int == 3 }}
+      hvac_fan:
+        friendly_name: "HVAC Fan"
+        device_class: light
+        value_template: >-
+          {{ is_state_attr('climate.living_room', 'fan', 'on') }}
+      hvac_cool:
+        friendly_name: "HVAC Cool"
+        device_class: cold
+        value_template: >-
+          {{ is_state_attr('climate.living_room', 'hvac_action', 'cooling') }}
+      hvac_heat:
+        friendly_name: "HVAC Heat"
+        device_class: heat
+        value_template: >-
+          {{ is_state_attr('climate.living_room', 'hvac_action', 'heating') }}
+    
+          
+          
+          
+          
+          
+    

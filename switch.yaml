@@ -1,0 +1,51 @@
+  - platform: mqtt
+    name: "Desktop Power Lock"
+    state_topic: "tnt/node/state"
+    command_topic: "tnt/node/set"
+    availability_topic: "tnt/node/LWT"
+    payload_on: "toggle"
+    payload_off: "toggle"
+    state_on: "locked"
+    state_off: "unlocked"
+  - platform: mqtt
+    name: "Desktop Power Restart"
+    state_topic: "tnt/node/state"
+    command_topic: "tnt/node/set"
+    availability_topic: "tnt/node/LWT"
+    payload_on: "restart"
+    payload_off: "restart"
+    state_on: "relay on"
+    state_off: "relay off"
+  - platform: mqtt
+    name: "Desktop Power Hard Restart"
+    state_topic: "tnt/node/state"
+    command_topic: "tnt/node/set"
+    availability_topic: "tnt/node/LWT"
+    payload_on: "hard restart"
+    payload_off: "hard restart"
+    state_on: "relay on"
+    state_off: "relay off"
+  - platform: command_line
+    switches:
+      living_room_tv:
+        command_on: 'curl -X POST http://172.16.1.127:8060/keypress/PowerOn'
+        command_off: 'curl -X POST http://172.16.1.127:8060/keypress/PowerOff'
+        command_state: 'curl -s GET http://172.16.1.127:8060/query/device-info | grep power-mode | sed -e "s:<power-mode>DisplayOff</power-mode>:OFF:" -e "s:<power-mode>PowerOn</power-mode>:ON:"'
+        value_template: '{{ value == "ON" }}'
+      # girls_bedroom_tv:
+        # command_on: 'curl -X POST http://172.16.1.2:8060/keypress/PowerOn'
+        # command_off: 'curl -X POST http://172.16.1.2:8060/keypress/PowerOff'
+        # command_state: 'curl -s GET http://172.16.1.2:8060/query/device-info | grep power-mode | sed -e "s:<power-mode>DisplayOff</power-mode>:OFF:" -e "s:<power-mode>PowerOn</power-mode>:ON:"'
+        # value_template: '{{ value == "ON" }}'
+  - platform: template
+    switches:
+      roomba_running:
+        value_template: "{% if is_state_attr('vacuum.roomba', 'status', 'Charging') or is_state_attr('vacuum.roomba', 'status', 'Stopped') or is_state_attr('vacuum.roomba', 'status', 'Stuck') -%}false{%- else -%}true{% endif %}"
+        turn_on:
+          service: vacuum.turn_on
+          data:
+            entity_id: vacuum.roomba
+        turn_off:
+          service: vacuum.return_to_base
+          data:
+            entity_id: vacuum.roomba

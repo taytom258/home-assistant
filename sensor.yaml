@@ -1,0 +1,213 @@
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+  - platform: netdata
+    name: Siberian
+    host: 172.16.2.10
+    resources:
+      Temperature:
+        data_group: sensors.temp_thermal_zone0_thermal_thermal_zone0
+        element: sys_devices_virtual_thermal_thermal_zone0_temp
+      System RAM Free:
+        data_group: system.ram
+        element: free
+      System RAM Used:
+        data_group: system.ram
+        element: used
+      System CPU User:
+        data_group: system.cpu
+        element: user
+      System CPU System:
+        data_group: system.cpu
+        element: user
+      System Load 1 Min:
+        data_group: system.load
+        element: load1
+      System Load 5 Min:
+        data_group: system.load
+        element: load5
+      System Load 15 Min:
+        data_group: system.load
+        element: load15
+  - platform: netdata
+    name: Malayan
+    host: 172.16.2.11
+    resources:
+      Temperature:
+        data_group: sensors.temp_thermal_zone0_thermal_thermal_zone0
+        element: sys_devices_virtual_thermal_thermal_zone0_temp
+      System RAM Free:
+        data_group: system.ram
+        element: free
+      System RAM Used:
+        data_group: system.ram
+        element: used
+      System CPU User:
+        data_group: system.cpu
+        element: user
+      System CPU System:
+        data_group: system.cpu
+        element: user
+      System Load 1 Min:
+        data_group: system.load
+        element: load1
+      System Load 5 Min:
+        data_group: system.load
+        element: load5
+      System Load 15 Min:
+        data_group: system.load
+        element: load15
+  - platform: darksky
+    api_key: !secret darksky_api
+    units: us
+    scan_interval: 00:03:00
+    forecast:
+      - 0
+    monitored_conditions:
+      - summary
+      - icon
+      - temperature
+      - precip_type
+      - precip_intensity
+      - precip_probability
+      - apparent_temperature
+      - cloud_cover
+      - dew_point
+      - wind_speed
+      - wind_gust
+      - wind_bearing
+      - humidity
+      - pressure
+      - visibility
+      - ozone
+      - minutely_summary
+      - hourly_summary
+      - daily_summary
+      - uv_index
+      - nearest_storm_distance
+      - nearest_storm_bearing
+  - platform: template
+    sensors:
+      charge_taylorsmacbookpro:
+        unit_of_measurement: '%'
+        device_class: battery
+        friendly_name: Taylor's MacBook Pro Battery
+        value_template: >
+          {%- if states.device_tracker.taylorsmacbookpro.attributes.battery %}
+              {{ states.device_tracker.taylorsmacbookpro.attributes.battery|round }}
+          {% else %}
+              {{ states.sensor.battery_taylorsmacbookpro.state }}
+          {%- endif %}
+        icon_template: '{%- if is_state("sensor.battery_tnttaylorsmacbookpro", "unknown") %}mdi:battery-unknown{%- elif is_state_attr("device_tracker.taylorsmacbookpro", "battery_status", "Charging") %}mdi:battery-charging{%- elif  states.device_tracker.taylorsmacbookpro.attributes.battery <= 5 %}mdi:battery-outline{%- elif states.device_tracker.taylorsmacbookpro.attributes.battery >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.device_tracker.taylorsmacbookpro.attributes.battery|float / 10)|round*10}}{%- endif %}'
+      charge_tntiphone:
+        unit_of_measurement: '%'
+        device_class: battery
+        friendly_name: TNT iPhone Battery
+        value_template: >
+          {%- if states.device_tracker.tntiphone.attributes.battery %}
+              {{ states.device_tracker.tntiphone.attributes.battery|round }}
+          {% else %}
+              {{ states.sensor.battery_tntiphone.state }}
+          {%- endif %}
+        icon_template: '{%- if is_state("sensor.battery_tntiphone", "unknown") %}mdi:battery-unknown{%- elif is_state_attr("device_tracker.tntiphone", "battery_status", "Charging") %}mdi:battery-charging{%- elif  states.device_tracker.tntiphone.attributes.battery <= 5 %}mdi:battery-outline{%- elif states.device_tracker.tntiphone.attributes.battery >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.device_tracker.tntiphone.attributes.battery|float / 10)|round*10}}{%- endif %}'
+      charge_matiphone:
+        unit_of_measurement: '%'
+        device_class: battery
+        friendly_name: MAT iPhone Battery
+        value_template: >
+          {%- if states.device_tracker.matiphone.attributes.battery %}
+              {{ states.device_tracker.matiphone.attributes.battery|round }}
+          {% else %}
+              {{ states.sensor.battery_matiphone.state }}
+          {%- endif %}
+        icon_template: '{%- if is_state("sensor.battery_tntmatiphone", "unknown") %}mdi:battery-unknown{%- elif is_state_attr("device_tracker.matiphone", "battery_status", "Charging") %}mdi:battery-charging{%- elif  states.device_tracker.matiphone.attributes.battery <= 5 %}mdi:battery-outline{%- elif states.device_tracker.matiphone.attributes.battery >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.device_tracker.matiphone.attributes.battery|float / 10)|round*10}}{%- endif %}'
+      # roomba_battery:
+        # friendly_name_template: "{{ states.vacuum.roomba.name}}"
+        # value_template: >
+          # {%- if states.vacuum.roomba.attributes["battery_level"] %}
+              # {{ states.vacuum.roomba.attributes["battery_level"]|round }}
+          # {% else %}
+              # {{ states.vacuum.roomba.state }}
+          # {%- endif %}
+        # unit_of_measurement: '%'
+        # icon_template: '{{states.vacuum.roomba.attributes.battery_icon}}'
+      living_room_motion_battery:
+        friendly_name_template: "{{ states.zwave.aeotec_limited_zwa005_trisensor_2.name }} Battery"
+        value_template: >
+          {%- if states.zwave.aeotec_limited_zwa005_trisensor_2.attributes["battery_level"] %}
+              {{ states.zwave.aeotec_limited_zwa005_trisensor_2.attributes["battery_level"]|round }}
+          {% else %}
+              {{ states.zwave.aeotec_limited_zwa005_trisensor_2.state }}
+          {%- endif %}
+        unit_of_measurement: '%'
+        icon_template: '{%- if is_state("sensor.zwave.aeotec_limited_zwa005_trisensor_2", "unknown") %}mdi:battery-unknown{%- elif  states.zwave.aeotec_limited_zwa005_trisensor_2.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.zwave.aeotec_limited_zwa005_trisensor_2.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.zwave.aeotec_limited_zwa005_trisensor_2.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+      dining_room_motion_battery:
+        friendly_name_template: "{{ states.zwave.aeotec_limited_zwa005_trisensor.name }} Battery"
+        value_template: >
+          {%- if states.zwave.aeotec_limited_zwa005_trisensor.attributes["battery_level"] %}
+              {{ states.zwave.aeotec_limited_zwa005_trisensor.attributes["battery_level"]|round }}
+          {% else %}
+              {{ states.zwave.aeotec_limited_zwa005_trisensor.state }}
+          {%- endif %}
+        unit_of_measurement: '%'
+        icon_template: '{%- if is_state("sensor.zwave.aeotec_limited_zwa005_trisensor", "unknown") %}mdi:battery-unknown{%- elif  states.zwave.aeotec_limited_zwa005_trisensor.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.zwave.aeotec_limited_zwa005_trisensor.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.zwave.aeotec_limited_zwa005_trisensor.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+      dining_room_door_battery:
+        friendly_name_template: "{{ states.zwave.aeon_labs_zw120_door_window_sensor_gen5.name }} Battery"
+        value_template: >
+          {%- if states.zwave.aeon_labs_zw120_door_window_sensor_gen5.attributes["battery_level"] %}
+              {{ states.zwave.aeon_labs_zw120_door_window_sensor_gen5.attributes["battery_level"]|round }}
+          {% else %}
+              {{ states.zwave.aeon_labs_zw120_door_window_sensor_gen5.state }}
+          {%- endif %}
+        unit_of_measurement: '%'
+        icon_template: '{%- if is_state("sensor.zwave.aeon_labs_zw120_door_window_sensor_gen5", "unknown") %}mdi:battery-unknown{%- elif  states.zwave.aeon_labs_zw120_door_window_sensor_gen5.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.zwave.aeon_labs_zw120_door_window_sensor_gen5.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.zwave.aeon_labs_zw120_door_window_sensor_gen5.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+      front_door_battery:
+        friendly_name_template: "{{ states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.name }} Battery"
+        value_template: >
+          {%- if states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.attributes["battery_level"] %}
+              {{ states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.attributes["battery_level"]|round }}
+          {% else %}
+              {{ states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.state }}
+          {%- endif %}
+        unit_of_measurement: '%'
+        icon_template: '{%- if is_state("sensor.zwave.aeon_labs_zw120_door_window_sensor_gen5_2", "unknown") %}mdi:battery-unknown{%- elif  states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.zwave.aeon_labs_zw120_door_window_sensor_gen5_2.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+      computer_deck_amps:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Current"
+        value_template: '{{ states.switch.computer_deck.attributes["current_a"] | float }}'
+        unit_of_measurement: 'A'
+      computer_deck_watts:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Current Consumption"
+        value_template: '{{ states.switch.computer_deck.attributes["current_power_w"] | float }}'
+        unit_of_measurement: 'W'
+      computer_deck_total_kwh:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Total Consumption"
+        value_template: '{{ states.switch.computer_deck.attributes["total_energy_kwh"] | float }}'
+        unit_of_measurement: 'kWh'
+      computer_deck_volts:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Voltage"
+        value_template: '{{ states.switch.computer_deck.attributes["voltage"] | float }}'
+        unit_of_measurement: 'V'
+      computer_deck_today_kwh:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Today's Consumption"
+        value_template: '{{ states.switch.computer_deck.attributes["today_energy_kwh"] | float }}'
+        unit_of_measurement: 'kWh'
+      computer_deck_today_price:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Today's Price"
+        value_template: '{{ (states.switch.computer_deck.attributes["today_energy_kwh"] | float*0.12) | round(2)}}'
+        unit_of_measurement: '$'
+      computer_deck_month_price:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Monthly Price"
+        value_template: '{{ (states.switch.computer_deck.attributes["today_energy_kwh"] | float*0.12*30) | round(2)}}'
+        unit_of_measurement: '$'
+      computer_deck_total_price:
+        friendly_name_template: "{{ states.switch.computer_deck.name}} Total Price"
+        value_template: '{{ (states.switch.computer_deck.attributes["total_energy_kwh"] | float*0.12) | round(2)}}'
+        unit_of_measurement: '$'
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'time_date'

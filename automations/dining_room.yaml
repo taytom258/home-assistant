@@ -1,0 +1,147 @@
+############################################################################################
+- alias: Dining Room Motion On
+  trigger:
+  - entity_id: binary_sensor.dining_room_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.dining_room
+    service: light.turn_on
+  - data:
+      entity_id: light.kitchen
+    service: light.turn_on
+  - data:
+      data:
+        priority: '-2'
+      message: Motion in dining room, turning on lights
+      title: Dining Room Motion On
+    service: notify.pushover
+############################################################################################
+- alias: Dining Room Motion Off
+  trigger:
+  - entity_id: binary_sensor.dining_room_motion
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: light.dining_room
+    service: light.turn_off
+  - data:
+      entity_id: light.kitchen
+    service: light.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: No motion in dining room, turning off lights
+      title: Dining Room Motion Off
+    service: notify.pushover
+############################################################################################
+- alias: Dining Room Overhead Light Return
+  trigger:
+  - entity_id: switch.jasco_products_14292_in_wall_smart_toggle_switch_switch
+    from: 'on'
+    for: 00:00:02
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.jasco_products_14292_in_wall_smart_toggle_switch_switch
+    service: switch.turn_on
+  - delay: 00:00:02
+  - data:
+      entity_id: light.dining_room_overhead
+    service: light.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Someone turned off a hue bulb, turning it back on
+      title: Dining Room Overhead Light Return
+    service: notify.pushover
+############################################################################################
+- alias: Dining Room Door A/C Off
+  trigger:
+  - entity_id: binary_sensor.dining_room_door
+    from: 'off'
+    for: 00:00:30
+    platform: state
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: "{{ not is_state('climate.living_room', 'off') }}"
+  action:
+  - data:
+      entity_id: climate.living_room
+    service: climate.turn_off
+  - data:
+      data:
+        priority: '-2'
+      message: Dining room door is open, turning off A/C
+      title: Dining Room Door A/C Off
+    service: notify.pushover
+############################################################################################
+- alias: Dining Room Door A/C On
+  trigger:
+  - entity_id: binary_sensor.dining_room_door
+    from: 'on'
+    for: 00:00:30
+    platform: state
+    to: 'off'
+  condition:
+  - condition: template
+    value_template: "{{ is_state('climate.living_room', 'off') }}"
+  action:
+  - data:
+      entity_id: climate.living_room
+      hvac_mode: auto
+    service: climate.set_hvac_mode
+  - data:
+      data:
+        priority: '-2'
+      message: Dining room door is closed, turning on A/C
+      title: Dining Room Door A/C On
+    service: notify.pushover
+############################################################################################  
+- alias: Dining Room Door Open Alert
+  trigger:
+  - entity_id: binary_sensor.dining_room_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Dining room door has been opened
+      title: Dining Room Door Open Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Dining room door has been opened, notifying IOS
+      title: Dining Room Door Open Alert
+    service: notify.pushover
+############################################################################################
+- alias: Dining Room Door Close Alert
+  trigger:
+  - entity_id: binary_sensor.dining_room_door
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Dining room door has been closed
+      title: Dining Room Door Close Alert
+    service: notify.ios_tnt
+  - data:
+      data:
+        priority: '-2'
+      message: Dining room door has been closed, notifying IOS
+      title: Dining Room Door Close Alert
+    service: notify.pushover

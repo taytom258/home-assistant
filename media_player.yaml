@@ -1,0 +1,9 @@
+  - platform: webostv
+    host: 172.16.1.15
+    name: Dining Room TV
+    filename: webostv.conf
+    timeout: 5
+    turn_on_action:
+      service: wake_on_lan.send_magic_packet
+      data:
+        mac: !secret TVMAC

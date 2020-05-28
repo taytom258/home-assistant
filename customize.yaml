@@ -1,0 +1,124 @@
+binary_sensor.bengal:
+  friendly_name: Bengal
+  icon: mdi:server-network
+lock.august_asl_03_smart_lock_locked:
+  friendly_name: Front Door Lock
+sensor.aeon_labs_zw095_home_energy_meter_gen5_energy:
+  friendly_name: Home Energy Meter Energy (Total)
+  icon: mdi:gauge
+sensor.aeon_labs_zw095_home_energy_meter_gen5_power:
+  friendly_name: Home Energy Meter Power (Total)
+  icon: mdi:gauge
+sensor.aeon_labs_zw095_home_energy_meter_gen5_voltage:
+  friendly_name: Home Energy Meter Voltage (Total)
+  icon: mdi:gauge
+zwave.aeon_labs_zw090_z_stick_gen5_us:
+  friendly_name: ZW090 Z-Stick
+zwave.aeon_labs_zw095_home_energy_meter_gen5:
+  friendly_name: ZW095 Home Energy Meter
+zwave.aeon_labs_zw117_range_extender_6:
+  friendly_name: ZW117 Range Extender
+zwave.aeon_labs_zw120_door_window_sensor_gen5:
+  friendly_name: ZW120 Door Window Sensor (Dining Room)
+zwave.aeon_labs_zw120_door_window_sensor_gen5_2:
+  friendly_name: ZW120 Door Window Sensor (Front Door)
+zwave.aeotec_limited_zwa005_trisensor:
+  friendly_name: ZWA005 TriSensor (Dining Room)
+zwave.aeotec_limited_zwa005_trisensor_2:
+  friendly_name: ZWA005 TriSensor (Living Room)
+zwave.august_asl_03_smart_lock:
+  friendly_name: ASL-03 Smart Lock (Front Door)
+switch.living_room_tv:
+  friendly_name: Living Room TV
+  icon: mdi:television
+switch.girls_bedroom_tv:
+  friendly_name: Girl's Bedroom TV
+switch.jasco_products_14288_duplex_receptacle_switch:
+  friendly_name: Master Bedroom Outlet
+  icon: mdi:power-socket-us
+zwave.jasco_products_14288_duplex_receptacle:
+  friendly_name: 14288 Duplex Receptacle (Master Bedroom)
+switch.computer_deck:
+  friendly_name: Computer Deck
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_2:
+  friendly_name: Stairs Light Switch
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch:
+  friendly_name: Dining Room Overhead Light Switch
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_3:
+  friendly_name: Living Room Overhead Light Switch
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_4:
+  friendly_name: Girl’s Bedroom Ceiling Fan
+  icon: mdi:fan
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_6:
+  friendly_name: Entry Light Switch
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_5:
+  friendly_name: Guest Bedroom Ceiling Fan
+  icon: mdi:fan
+switch.jasco_products_14292_in_wall_smart_toggle_switch_switch_7:
+  friendly_name: Living Room Overhead Light Switch
+zwave.jasco_products_14292_in_wall_smart_toggle_switch:
+  friendly_name: 14292 Toggle Switch (Dining Room)
+zwave.jasco_products_14292_in_wall_smart_toggle_switch_3:
+  friendly_name: 14292 Toggle Switch (Stairs)
+zwave.jasco_products_14292_in_wall_smart_toggle_switch_4:
+  friendly_name: 14292 Toggle Switch (Living Room)
+zwave.jasco_products_14292_in_wall_smart_toggle_switch_5:
+  friendly_name: 14292 Toggle Switch (Guest Bedroom)
+zwave.jasco_products_14292_in_wall_smart_toggle_switch_2:
+  friendly_name: 14292 Toggle Switch (Stairs)
+zwave.jasco_products_14292_in_wall_smart_toggle_switch_6:
+  friendly_name: 14292 Toggle Switch (Entry)
+sensor.computer_deck_volts:
+  icon: mdi:gauge
+sensor.computer_deck_watts:
+  icon: mdi:gauge
+sensor.computer_deck_today_kwh:
+  icon: mdi:gauge
+switch.aeon_labs_zw139_nano_switch_switch:
+  friendly_name: Guest Bedroom Ceiling Fan
+  icon: mdi:fan
+zwave.aeon_labs_zw139_nano_switch:
+  friendly_name: ZW139 Nano Switch (Living Room)
+sensor.living_room_humidity:
+  friendly_name: Humidity
+switch.desktop_power_lock:
+  device_class: switch
+  icon: mdi:lock
+switch.desktop_power_switch:
+  device_class: switch
+  icon: mdi:radiobox-marked
+zwave.aeotec_limited_zwa005_trisensor_3:
+  friendly_name: ZWA005 TriSensor (Dining Room)
+zwave.aeotec_limited_zwa005_trisensor_4:
+  friendly_name: ZWA005 TriSensor (Living Room)
+device_tracker.tile_6125d99edf3c4e01:
+  friendly_name: TNT Keys
+device_tracker.tile_98045d82ef33450c:
+  friendly_name: MAT Keys
+device_tracker.matiphone:
+  friendly_name: MAT iPhone
+  icon: mdi:cellphone-iphone
+device_tracker.mat_iphone:
+  friendly_name: MAT iPhone (Router)
+  icon: mdi:cellphone-iphone
+device_tracker.tntiphone:
+  friendly_name: TNT iPhone
+  icon: mdi:cellphone-iphone
+device_tracker.tnt_iphone:
+  friendly_name: TNT iPhone (Router)
+  icon: mdi:cellphone-iphone
+zwave.aeon_labs_zw139_nano_switch_2:
+  friendly_name: ZW139 Nano Switch (Master Bedroom)
+switch.aeon_labs_zw139_nano_switch_switch_2:
+  friendly_name: Living Room Ceiling Fan
+  icon: mdi:fan
+zwave.aeon_labs_zw139_nano_switch_3:
+  friendly_name: ZW139 Nano Switch (Guest Bedroom)
+switch.aeon_labs_zw139_nano_switch_switch_3:
+  friendly_name: Master Bedroom Ceiling Fan
+  icon: mdi:fan
+zwave.aeon_labs_zw139_nano_switch_4:
+  friendly_name: ZW139 Nano Switch (Kids’ Bedroom)
+switch.aeon_labs_zw139_nano_switch_switch_4:
+  friendly_name: Kids’ Bedroom Ceiling Fan
+  icon: mdi:fan

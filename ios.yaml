@@ -1,0 +1,11 @@
+  push:
+    categories:
+      - name: Garage
+        identifier: 'garage'
+        actions:
+          - identifier: 'CLOSE_GARAGE'
+            title: 'Close Garage'
+            activationMode: 'background'
+            authenticationRequired: false
+            destructive: false
+            behavior: 'default'

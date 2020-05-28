@@ -1,0 +1,26 @@
+  - platform: group
+    name: Living Room Overhead
+    entities:
+      -  light.living_room_overhead_center
+      -  light.living_room_overhead_left
+      -  light.living_room_overhead_right
+  - platform: group
+    name: Living Room Lamps
+    entities:
+      -  light.living_room_lamp_left
+      -  light.living_room_lamp_right     
+      
+  - platform: group
+    name: Downstairs Lights
+    entities:
+      -  light.dining_room
+      -  light.kitchen
+      -  light.living_room
+      -  light.garage
+  - platform: group
+    name: Upstairs Lights
+    entities:
+      -  light.master_bedroom
+      -  light.stairs
+      -  light.kids_bedroom
+      -  light.guest_bedroom

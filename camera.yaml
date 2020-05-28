@@ -1,0 +1,9 @@
+  - platform: ffmpeg
+    name: "Front Door"
+    input: rtsp://192.168.1.5:7447/J9gQPFM5k2MCN5A6
+  - platform: ffmpeg
+    name: "Dining Room"
+    input: rtsp://192.168.1.5:7447/6BPBzgC1yNzdnrIY
+  - platform: ffmpeg
+    name: "Living Room"
+    input: rtsp://192.168.1.5:7447/v2tRoZM6IV0DDEKi

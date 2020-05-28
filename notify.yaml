@@ -1,0 +1,10 @@
+  - name: ecobeenotify
+    platform: ecobee
+  - name: pushover
+    platform: pushover
+    api_key: !secret pushover_api
+    user_key: !secret pushover_user
+  - platform: webostv
+    host: 172.16.1.15
+    name: dining_room_tv
+    filename: webostv.conf
