@@ -128,7 +128,3 @@
         friendly_name_template: "{{ states.switch.computer_deck.name}} Total Price"
         value_template: '{{ (states.switch.computer_deck.attributes["total_energy_kwh"] | float*0.12) | round(2)}}'
         unit_of_measurement: '$'
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'time_date'

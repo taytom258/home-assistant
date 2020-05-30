@@ -1,7 +1,4 @@
   - platform: ping
-    name: Bengal
-    host: 165.227.86.75
-  - platform: ping
     name: Siberian
     host: 172.16.2.10
   - platform: ping
